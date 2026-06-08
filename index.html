@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#e8defc">
+<title>Dana's Strength Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     DESIGN SYSTEM
+     ============================================================ */
+  :root {
+    /* Background gradient (vertical ombre) */
+    --bg-start: #e8defc;   /* lavender */
+    --bg-mid:   #fde4d3;   /* peach */
+    --bg-end:   #fcf6ea;   /* cream */
+    --grad: linear-gradient(180deg, var(--bg-start) 0%, var(--bg-mid) 55%, var(--bg-end) 100%);
+
+    /* Surfaces */
+    --card: #ffffff;
+    --card-soft: #f7f5fa;
+
+    /* Text */
+    --text:   #1f1d2e;
+    --text-2: #6c6a7c;
+    --muted:  #a8a5b5;
+
+    /* Lines */
+    --line: rgba(31, 29, 46, 0.06);
+
+    /* Shadows (soft, layered) */
+    --shadow:    0 1px 2px rgba(31,29,46,0.04), 0 6px 20px rgba(80, 60, 120, 0.06);
+    --shadow-lg: 0 2px 6px rgba(31,29,46,0.05), 0 18px 40px rgba(80, 60, 120, 0.10);
+
+    /* Muscle-group pastel family (matched saturation) */
+    --tricep:    #8e7bb8;  --tricep-bg:  #ede7f7;
+    --bicep:     #7b9cb8;  --bicep-bg:   #e6eef5;
+    --quad:      #c69478;  --quad-bg:    #f7ebe1;
+    --glute:     #c2789c;  --glute-bg:   #f7e3ee;
+    --core:      #88b078;  --core-bg:    #ebf3e4;
+
+    /* Type scale */
+    --t-xs: 0.7rem;
+    --t-sm: 0.8rem;
+    --t-md: 0.9rem;
+    --t-lg: 1rem;
+    --t-xl: 1.25rem;
+    --t-2xl: 1.7rem;
+    --t-3xl: 2.2rem;
+
+    /* Spacing scale */
+    --s-1: 4px;  --s-2: 8px;  --s-3: 12px;  --s-4: 16px;
+    --s-5: 22px; --s-6: 32px; --s-7: 48px;
+
+    /* Radius */
+    --r-sm: 12px; --r-md: 18px; --r-lg: 24px; --r-pill: 100px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  html, body { background: var(--grad); background-attachment: fixed; min-height: 100vh; }
+
+  body {
+    color: var(--text);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 400;
+    padding: 0 0 var(--s-7);
+    -webkit-font-smoothing: antialiased;
+    letter-spacing: -0.005em;
+  }
+
+  /* ============================================================
+     HEADER
+     ============================================================ */
+  header {
+    padding: var(--s-6) var(--s-5) var(--s-5);
+    text-align: left;
+  }
+  .date-strip {
+    font-size: var(--t-xs);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    color: var(--text-2);
+    text-transform: uppercase;
+    margin-bottom: var(--s-2);
+  }
+  header h1 {
+    font-size: var(--t-3xl);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--text);
+  }
+
+  /* ============================================================
+     PROGRESS CARD
+     ============================================================ */
+  .progress-wrap {
+    margin: 0 var(--s-4) var(--s-4);
+    background: var(--card);
+    border-radius: var(--r-md);
+    padding: var(--s-4);
+    box-shadow: var(--shadow);
+  }
+  .progress-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: var(--s-3);
+  }
+  .progress-label {
+    font-size: var(--t-xs);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .progress-count {
+    font-size: var(--t-xl);
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.02em;
+  }
+  .progress-count .total { color: var(--muted); font-weight: 500; }
+
+  .progress-bar {
+    height: 8px;
+    background: var(--card-soft);
+    border-radius: var(--r-pill);
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg, #b8a4d4, #c2789c, #c69478);
+    border-radius: var(--r-pill);
+    transition: width 0.4s ease;
+  }
+
+  .progress-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: var(--s-3);
+    font-size: var(--t-xs);
+    color: var(--muted);
+  }
+  .week-btn {
+    background: var(--card-soft);
+    border: none;
+    font-family: inherit;
+    font-size: var(--t-xs);
+    font-weight: 600;
+    color: var(--text);
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 6px 12px;
+    border-radius: var(--r-pill);
+  }
+
+  /* ============================================================
+     FILTER BAR
+     ============================================================ */
+  .filter-bar {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding: 0 var(--s-4) var(--s-1);
+    margin-bottom: var(--s-4);
+    scrollbar-width: none;
+  }
+  .filter-bar::-webkit-scrollbar { display: none; }
+
+  .filter-btn {
+    padding: 8px 14px;
+    border-radius: var(--r-pill);
+    border: none;
+    background: var(--card);
+    color: var(--text-2);
+    font-family: inherit;
+    font-size: var(--t-xs);
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    transition: all 0.15s;
+    box-shadow: var(--shadow);
+  }
+  .filter-btn.active {
+    background: var(--text);
+    color: var(--card);
+  }
+
+  /* ============================================================
+     SECTION LABELS
+     ============================================================ */
+  .section-label {
+    font-size: var(--t-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--text);
+    margin: var(--s-5) var(--s-5) var(--s-3);
+    font-weight: 700;
+  }
+
+  /* ============================================================
+     CARDS
+     ============================================================ */
+  .cards {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0 var(--s-4);
+  }
+
+  .card {
+    background: var(--card);
+    border-radius: var(--r-md);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: box-shadow 0.2s, transform 0.1s;
+  }
+  .card.done {
+    background: linear-gradient(180deg, #f9f7fb 0%, #ffffff 100%);
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    padding: 14px 14px 14px 12px;
+    gap: 12px;
+    cursor: pointer;
+  }
+
+  .check {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    border: 1.75px solid var(--line);
+    background: var(--card);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .check svg { width: 14px; height: 14px; opacity: 0; stroke: white; transition: opacity 0.15s; }
+  .card.done .check { background: #88b078; border-color: #88b078; }
+  .card.done .check svg { opacity: 1; }
+
+  .icon-bubble {
+    width: 38px; height: 38px;
+    border-radius: var(--r-sm);
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .icon-bubble svg { width: 20px; height: 20px; stroke-width: 2; }
+
+  .icon-bubble.tricep { background: var(--tricep-bg); color: var(--tricep); }
+  .icon-bubble.bicep  { background: var(--bicep-bg);  color: var(--bicep); }
+  .icon-bubble.quad   { background: var(--quad-bg);   color: var(--quad); }
+  .icon-bubble.glute  { background: var(--glute-bg);  color: var(--glute); }
+  .icon-bubble.core   { background: var(--core-bg);   color: var(--core); }
+
+  .title-block { flex: 1; min-width: 0; }
+  .title-block h3 {
+    font-size: var(--t-md);
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--text);
+    letter-spacing: -0.01em;
+  }
+  .card.done .title-block h3 {
+    color: var(--muted);
+    text-decoration: line-through;
+    text-decoration-thickness: 1.5px;
+  }
+
+  .meta-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 5px;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    font-size: 0.62rem;
+    padding: 2px 9px;
+    border-radius: var(--r-pill);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .tag.tricep { background: var(--tricep-bg); color: var(--tricep); }
+  .tag.bicep  { background: var(--bicep-bg);  color: var(--bicep); }
+  .tag.quad   { background: var(--quad-bg);   color: var(--quad); }
+  .tag.glute  { background: var(--glute-bg);  color: var(--glute); }
+  .tag.core   { background: var(--core-bg);   color: var(--core); }
+
+  .target {
+    font-size: var(--t-xs);
+    font-weight: 600;
+    color: var(--text-2);
+    background: var(--card-soft);
+    padding: 2px 9px;
+    border-radius: var(--r-pill);
+    cursor: pointer;
+  }
+  .target input {
+    font-family: inherit; font-size: inherit; font-weight: inherit;
+    color: inherit; background: transparent; border: none; outline: none;
+    width: 100%; padding: 0;
+  }
+
+  .chevron {
+    color: var(--muted);
+    font-size: 0.7rem;
+    transition: transform 0.25s;
+    flex-shrink: 0;
+    padding: 4px;
+  }
+  .card.open .chevron { transform: rotate(180deg); }
+
+  .card-body { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+  .card.open .card-body { max-height: 700px; }
+
+  .card-body-inner { padding: 4px 18px 18px; }
+  .card-body-inner p {
+    font-size: var(--t-md);
+    line-height: 1.6;
+    color: var(--text-2);
+  }
+
+  .tip {
+    margin-top: 12px;
+    background: var(--card-soft);
+    border-left: 3px solid var(--text);
+    border-radius: 0 var(--r-sm) var(--r-sm) 0;
+    padding: 10px 12px;
+    font-size: var(--t-sm);
+    color: var(--text-2);
+    line-height: 1.55;
+  }
+  .tip strong { color: var(--text); font-weight: 600; }
+
+  /* ============================================================
+     GEAR
+     ============================================================ */
+  .gear-section {
+    margin: var(--s-6) var(--s-4) 0;
+    background: var(--card);
+    border-radius: var(--r-md);
+    padding: var(--s-4) 20px;
+    box-shadow: var(--shadow);
+  }
+  .gear-section h2 {
+    font-size: var(--t-lg);
+    font-weight: 700;
+    margin-bottom: var(--s-3);
+    letter-spacing: -0.01em;
+  }
+  .gear-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .gear-list li {
+    display: flex; align-items: center; gap: 10px;
+    font-size: var(--t-md); color: var(--text-2);
+  }
+  .gear-list li::before {
+    content: '✓';
+    color: var(--core);
+    font-weight: 700; font-size: var(--t-sm);
+  }
+
+  /* ============================================================
+     WEEK MODAL
+     ============================================================ */
+  .modal-backdrop {
+    position: fixed; inset: 0;
+    background: rgba(31,29,46,0.45);
+    backdrop-filter: blur(4px);
+    display: none; align-items: flex-end; justify-content: center;
+    z-index: 100;
+    animation: fadeIn 0.2s ease;
+  }
+  .modal-backdrop.open { display: flex; }
+
+  .modal {
+    background: var(--grad);
+    width: 100%; max-width: 560px;
+    border-radius: var(--r-lg) var(--r-lg) 0 0;
+    padding: var(--s-5) 20px var(--s-6);
+    max-height: 85vh; overflow-y: auto;
+    animation: slideUp 0.25s ease;
+  }
+  .modal-handle {
+    width: 40px; height: 4px; background: rgba(31,29,46,0.15);
+    border-radius: var(--r-pill); margin: 0 auto var(--s-4);
+  }
+  .modal h2 {
+    font-size: var(--t-2xl);
+    font-weight: 700;
+    margin-bottom: 4px;
+    letter-spacing: -0.02em;
+  }
+  .modal p.sub {
+    color: var(--text-2);
+    font-size: var(--t-sm);
+    margin-bottom: var(--s-4);
+  }
+
+  .week-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 11px 14px;
+    background: var(--card);
+    border-radius: var(--r-sm);
+    margin-bottom: 6px;
+    box-shadow: var(--shadow);
+  }
+  .week-row .name {
+    font-size: var(--t-sm);
+    font-weight: 600;
+    flex: 1; min-width: 0;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .week-dots { display: flex; gap: 4px; }
+  .week-dot {
+    width: 13px; height: 13px; border-radius: 50%;
+    background: var(--card-soft);
+  }
+  .week-dot.done { background: #88b078; }
+  .week-dot.today { box-shadow: 0 0 0 2px var(--text); }
+  .week-count {
+    font-size: var(--t-xs);
+    font-weight: 700;
+    color: var(--text);
+    min-width: 28px; text-align: right;
+    margin-left: 10px;
+  }
+  .close-btn {
+    display: block; margin: var(--s-4) auto 0;
+    background: var(--text); color: var(--card);
+    border: none; border-radius: var(--r-pill);
+    padding: 12px 32px;
+    font-family: inherit;
+    font-size: var(--t-xs);
+    font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+  .hidden { display: none !important; }
+
+  @media (min-width: 640px) {
+    header { padding: 48px 32px 24px; max-width: 640px; margin: 0 auto; }
+    header h1 { font-size: 2.6rem; }
+    .progress-wrap, .filter-bar, .cards, .gear-section { max-width: 640px; margin-left: auto; margin-right: auto; }
+    .section-label { max-width: 640px; margin-left: auto; margin-right: auto; padding-left: var(--s-1); }
+    .cards, .filter-bar { padding-left: 0; padding-right: 0; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="date-strip" id="dateStrip">—</div>
+  <h1>Dana's<br>Strength Plan</h1>
+</header>
+
+<div class="progress-wrap">
+  <div class="progress-top">
+    <span class="progress-label">Today</span>
+    <span class="progress-count"><span id="doneCount">0</span><span class="total"> / <span id="totalCount">0</span></span></span>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="progress-meta">
+    <span id="streakText">Let's go.</span>
+    <button class="week-btn" id="openWeek">This week →</button>
+  </div>
+</div>
+
+<div class="filter-bar">
+  <button class="filter-btn active" data-filter="all">All</button>
+  <button class="filter-btn" data-filter="tricep">Triceps</button>
+  <button class="filter-btn" data-filter="bicep">Biceps</button>
+  <button class="filter-btn" data-filter="quad">Quads</button>
+  <button class="filter-btn" data-filter="glute">Glutes</button>
+  <button class="filter-btn" data-filter="core">Core</button>
+</div>
+
+<div id="content"></div>
+
+<div class="gear-section">
+  <h2>What You Need</h2>
+  <ul class="gear-list">
+    <li>Dumbbells (a few weight options)</li>
+    <li>Sturdy chair or couch (dips, Bulgarian squats)</li>
+    <li>Resistance band (Pallof press at home)</li>
+    <li>Mini-band / loop band (clamshells)</li>
+    <li>Sturdy box or bench (step-ups)</li>
+    <li>Yoga mat (planks, dead bugs, glute work)</li>
+  </ul>
+</div>
+
+<!-- WEEK MODAL -->
+<div class="modal-backdrop" id="weekModal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <h2>This Week</h2>
+    <p class="sub">Last 7 days. Filled dot = completed.</p>
+    <div id="weekContent"></div>
+    <button class="close-btn" id="closeWeek">Done</button>
+  </div>
+</div>
+
+<!-- Lucide icons -->
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+<script>
+// ============================================================
+// DATA
+// ============================================================
+const GROUP_ICON = {
+  tricep: 'dumbbell',
+  bicep:  'zap',
+  quad:   'footprints',
+  glute:  'activity',
+  core:   'flame',
+};
+
+const EXERCISES = [
+  // TRICEPS
+  { id:'pushup', group:'tricep', name:'Standard Push-Up', target:'3 × 10',
+    body:'Hands shoulder-width, body straight from head to heels. Lower chest to just above the floor, push back up. Hits chest with strong tricep involvement.',
+    tip:'<strong>Scale:</strong> Knees down for easier, feet elevated on a chair for harder.' },
+  { id:'close-grip', group:'tricep', name:'Close-Grip Push-Up', target:'3 × 10',
+    body:'Standard push-up but hands closer together — about shoulder-width or slightly inside, fingers pointing forward. The narrower grip moves the work from chest to triceps.',
+    tip:'<strong>Hardest version:</strong> Diamond push-ups — fingertips touching to form a diamond under your chest.' },
+  { id:'dips', group:'tricep', name:'Tricep Dips', target:'3 × 12',
+    body:'Any sturdy chair, couch edge, or coffee table. Hands on the edge behind you with fingers pointing forward. Feet out in front, hips off the seat. Lower hips toward the floor by bending elbows, then push back up. Keep your back close to the surface.',
+    tip:'<strong>Harder = feet further out.</strong> Easier = feet closer / bent knees.' },
+  { id:'overhead-ext', group:'tricep', name:'Overhead Tricep Extension', target:'3 × 12',
+    body:'Hold one dumbbell with both hands overhead. Lower it behind your head by bending elbows, then extend back up. Elbows stay pointed at the ceiling — they shouldn\'t flare out.',
+    tip:'<strong>Starting weight:</strong> 8–10 lbs. If the last 3 reps are easy, go heavier.' },
+  { id:'skull', group:'tricep', name:'Skull Crushers', target:'3 × 12',
+    body:'Lie on your back (bench or floor). Hold dumbbells straight up over your chest. Bend only at the elbows to lower the weights toward your forehead — elbows stay stationary, pointing at the ceiling — then extend back up.',
+    tip:'<strong>Key:</strong> Only the forearm moves. Upper arm stays locked vertical.' },
+
+  // BICEPS
+  { id:'hammer', group:'bicep', name:'Hammer Curls', target:'3 × 12',
+    body:'Regular curl but palms face each other the entire time — like holding a hammer. Targets the brachialis (the muscle under your bicep) which adds visible thickness from both front and side.',
+    tip:'<strong>Why these:</strong> Regular curls hit the peak. Hammer curls add width. Do both.' },
+  { id:'incline-curl', group:'bicep', name:'Incline Dumbbell Curls', target:'3 × 10',
+    body:'Sit on a bench inclined to ~45°. Let your arms hang straight down behind you. Curl up from that fully stretched starting position. The stretch at the bottom is the whole point — longer range of motion than standing curls.',
+    tip:'<strong>Needs:</strong> An incline bench (gym) or improvise with pillows on a chair.' },
+
+  // QUADS
+  { id:'bulgarian', group:'quad', name:'Bulgarian Split Squat', target:'3 × 10 each side',
+    body:'Rear foot elevated on a bench or couch behind you, front foot stepped forward. Lower your back knee toward the floor, then drive up through your front heel. One of the best quad builders without a barbell.',
+    tip:'<strong>Start with bodyweight.</strong> It\'s harder than it looks. Once you hit 10 clean reps each side, add dumbbells.' },
+  { id:'lunges', group:'quad', name:'Walking Lunges', target:'3 × 12 each leg',
+    body:'Step forward into a lunge — front knee over ankle, back knee lowering toward the floor — then instead of stepping back, drive forward and bring your rear foot up into the next lunge. Hits quads, glutes, and core stabilizers at once.',
+    tip:'<strong>Start bodyweight.</strong> Add dumbbells at your sides once form is solid. Keep torso upright.' },
+  { id:'goblet', group:'quad', name:'Goblet Squat', target:'3 × 12',
+    body:'Hold one dumbbell vertically at your chest, cupping the top end with both hands like a goblet. Feet shoulder-width, toes slightly out. Squat down keeping chest up and torso tall — elbows can brush the inside of your knees at the bottom. Drive through your heels to stand.',
+    tip:'<strong>Start weight:</strong> 15–20 lbs. The dumbbell at your chest forces upright posture — that\'s the magic.' },
+  { id:'step-up', group:'quad', name:'Step-Ups', target:'3 × 10 each side',
+    body:'Stand in front of a sturdy chair, bench, or sturdy box. Place one foot fully on top, drive through that heel to stand all the way up. Lower with control back to the floor. All the work should come from the top leg — don\'t push off the bottom foot.',
+    tip:'<strong>Add load:</strong> Hold dumbbells at your sides once bodyweight feels easy. Higher step = harder.' },
+  { id:'wall-sit', group:'quad', name:'Wall Sit', target:'3 × 45 sec',
+    body:'Back flat against a wall, slide down until your thighs are parallel to the floor — knees bent at 90°, like sitting in an invisible chair. Hold. Keep your weight in your heels and your back fully against the wall.',
+    tip:'<strong>It will burn.</strong> When 45 sec feels manageable, go to 60. Holding a dumbbell on your thighs adds load.' },
+
+  // GLUTES
+  { id:'donkey', group:'glute', name:'Donkey Kicks', target:'3 × 15 each side',
+    body:'On hands and knees (tabletop position). Keeping your knee bent at 90°, drive one foot up toward the ceiling — squeeze the glute at the top. Lower with control. Don\'t arch your lower back; the lift comes from the glute, not the spine.',
+    tip:'<strong>Form check:</strong> If your back is arching, you\'re lifting too high.' },
+  { id:'clamshell', group:'glute', name:'Clamshells (banded)', target:'3 × 15 each side',
+    body:'Lie on your side, knees bent at 45°, feet stacked. Loop a mini resistance band around your thighs just above the knees. Keeping feet together, lift the top knee like a clamshell opening — squeeze the side glute, lower with control. Don\'t roll your hips back.',
+    tip:'<strong>Needs:</strong> A mini-band (the small loop kind). Without the band you can still do it, just way easier.' },
+  { id:'fire-hydrant', group:'glute', name:'Fire Hydrants', target:'3 × 15 each side',
+    body:'Tabletop position. Lift one knee out to the side (like a dog at a hydrant), keeping the knee bent at 90°. Hold briefly at the top, lower with control. Hits the gluteus medius — the side glute that shapes the hip.',
+    tip:'<strong>Keep hips square.</strong> Don\'t let your weight shift to the opposite side.' },
+  { id:'glute-bridge', group:'glute', name:'Glute Bridge', target:'3 × 15',
+    body:'Lie on your back, knees bent, feet flat on the floor close to your butt. Drive through your heels to lift your hips toward the ceiling. Squeeze at the top, lower with control. Body should form a straight line from knees to shoulders.',
+    tip:'<strong>Squeeze hard at the top.</strong> A 2-second hold beats sloppy fast reps.' },
+  { id:'hip-thrust', group:'glute', name:'Hip Thrust', target:'3 × 12',
+    body:'Upper back on a bench or couch, feet flat on the floor in front. Place a dumbbell across your hips. Drive your hips up until your body is parallel to the floor, squeeze, lower. The heavy-hitter for glute growth.',
+    tip:'<strong>Goes heavier than bridges.</strong> Start with 15–20 lbs across the hips and build up.' },
+
+  // CORE
+  { id:'pallof', group:'core', name:'Pallof Press', target:'3 × 10 each side',
+    body:'Cable machine or resistance band anchored beside you at chest height. Hold the handle at your chest, press straight out in front, hold briefly, bring back in. Your core fights to resist the rotation — that\'s the whole workout.',
+    tip:'<strong>Why it works:</strong> Trains anti-rotation stability — more functional than crunches.' },
+  { id:'dead-bug', group:'core', name:'Dead Bugs', target:'3 × 10 each side',
+    body:'Lie on your back, arms pointing at the ceiling, knees bent at 90° in the air. Slowly lower opposite arm and leg toward the floor — keeping your lower back pressed flat. Return and switch sides.',
+    tip:'<strong>Go slow.</strong> 3–4 seconds down, 3–4 seconds back. Speed kills the exercise.' },
+  { id:'plank', group:'core', name:'Plank Hold', target:'3 × 45 sec',
+    body:'Forearms on the floor, elbows under shoulders, body in a straight line from heels to head. Squeeze glutes and brace your core like someone\'s about to punch you in the stomach. Don\'t let hips sag or pike up.',
+    tip:'<strong>Quality over time.</strong> 30 perfect seconds beats 60 sloppy ones. When 45 sec is easy, go to 60.' },
+];
+
+const GROUP_NAME = { tricep:'Triceps', bicep:'Biceps', quad:'Quads', glute:'Glutes', core:'Core' };
+const GROUP_TAG  = { tricep:'Tricep', bicep:'Bicep', quad:'Quad', glute:'Glute', core:'Core' };
+const GROUP_ORDER = ['tricep','bicep','quad','glute','core'];
+
+// ============================================================
+// STORAGE
+// ============================================================
+const STORE_KEY = 'dana-strength-v1';
+function loadStore() {
+  try { return JSON.parse(localStorage.getItem(STORE_KEY)) || { history: {}, targets: {} }; }
+  catch { return { history: {}, targets: {} }; }
+}
+function saveStore(s) { localStorage.setItem(STORE_KEY, JSON.stringify(s)); }
+function dateKey(d) {
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+function todayKey() { return dateKey(new Date()); }
+
+let store = loadStore();
+
+// ============================================================
+// RENDER
+// ============================================================
+const content = document.getElementById('content');
+
+function render() {
+  content.innerHTML = '';
+  GROUP_ORDER.forEach(g => {
+    const items = EXERCISES.filter(e => e.group === g);
+    if (!items.length) return;
+
+    const label = document.createElement('div');
+    label.className = 'section-label';
+    label.dataset.section = g;
+    label.textContent = GROUP_NAME[g];
+    content.appendChild(label);
+
+    const wrap = document.createElement('div');
+    wrap.className = 'cards';
+    items.forEach(ex => wrap.appendChild(makeCard(ex)));
+    content.appendChild(wrap);
+  });
+  updateProgress();
+  if (window.lucide) lucide.createIcons();
+}
+
+function makeCard(ex) {
+  const today = todayKey();
+  const doneToday = (store.history[today] || []).includes(ex.id);
+  const target = store.targets[ex.id] || ex.target;
+
+  const card = document.createElement('div');
+  card.className = 'card' + (doneToday ? ' done' : '');
+  card.dataset.tags = ex.group;
+  card.dataset.id = ex.id;
+  card.innerHTML = `
+    <div class="card-header">
+      <div class="check" data-action="check">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="icon-bubble ${ex.group}">
+        <i data-lucide="${GROUP_ICON[ex.group]}"></i>
+      </div>
+      <div class="title-block">
+        <h3>${ex.name}</h3>
+        <div class="meta-row">
+          <span class="tag ${ex.group}">${GROUP_TAG[ex.group]}</span>
+          <span class="target" data-action="target" title="Tap to edit"><span class="target-text">${target}</span></span>
+        </div>
+      </div>
+      <span class="chevron" data-action="expand">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <p>${ex.body}</p>
+        ${ex.tip ? `<div class="tip">${ex.tip}</div>` : ''}
+      </div>
+    </div>
+  `;
+
+  card.querySelector('[data-action="check"]').addEventListener('click', e => {
+    e.stopPropagation();
+    toggleDone(ex.id, card);
+  });
+
+  const targetEl = card.querySelector('[data-action="target"]');
+  targetEl.addEventListener('click', e => {
+    e.stopPropagation();
+    if (targetEl.querySelector('input')) return;
+    const current = targetEl.querySelector('.target-text').textContent;
+    targetEl.innerHTML = `<input type="text" value="${current}" />`;
+    const input = targetEl.querySelector('input');
+    input.focus();
+    input.select();
+    const commit = () => {
+      const v = input.value.trim() || ex.target;
+      store.targets[ex.id] = v;
+      saveStore(store);
+      targetEl.innerHTML = `<span class="target-text">${v}</span>`;
+    };
+    input.addEventListener('blur', commit);
+    input.addEventListener('keydown', ev => { if (ev.key === 'Enter') input.blur(); });
+  });
+
+  card.querySelector('.card-header').addEventListener('click', e => {
+    if (e.target.closest('[data-action="check"]') || e.target.closest('[data-action="target"]')) return;
+    card.classList.toggle('open');
+  });
+
+  return card;
+}
+
+function toggleDone(id, card) {
+  const today = todayKey();
+  if (!store.history[today]) store.history[today] = [];
+  const arr = store.history[today];
+  const i = arr.indexOf(id);
+  if (i >= 0) { arr.splice(i, 1); card.classList.remove('done'); }
+  else { arr.push(id); card.classList.add('done'); }
+  saveStore(store);
+  updateProgress();
+}
+
+function updateProgress() {
+  const today = todayKey();
+  const done = (store.history[today] || []).length;
+  const total = EXERCISES.length;
+  document.getElementById('doneCount').textContent = done;
+  document.getElementById('totalCount').textContent = total;
+  document.getElementById('progressFill').style.width = `${(done/total)*100}%`;
+
+  const streakEl = document.getElementById('streakText');
+  if (done === 0) streakEl.textContent = "Let's go.";
+  else if (done === total) streakEl.textContent = "All done. 🎉";
+  else streakEl.textContent = `${total - done} to go`;
+
+  const d = new Date();
+  const opts = { weekday:'long', month:'long', day:'numeric' };
+  document.getElementById('dateStrip').textContent = d.toLocaleDateString('en-US', opts).toUpperCase();
+}
+
+// ============================================================
+// FILTER
+// ============================================================
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter = btn.dataset.filter;
+    document.querySelectorAll('.card').forEach(c => {
+      c.classList.toggle('hidden', filter !== 'all' && c.dataset.tags !== filter);
+    });
+    document.querySelectorAll('.section-label').forEach(l => {
+      l.classList.toggle('hidden', filter !== 'all' && l.dataset.section !== filter);
+    });
+  });
+});
+
+// ============================================================
+// WEEK MODAL
+// ============================================================
+const weekModal = document.getElementById('weekModal');
+document.getElementById('openWeek').addEventListener('click', () => {
+  renderWeek();
+  weekModal.classList.add('open');
+});
+document.getElementById('closeWeek').addEventListener('click', () => weekModal.classList.remove('open'));
+weekModal.addEventListener('click', e => { if (e.target === weekModal) weekModal.classList.remove('open'); });
+
+function renderWeek() {
+  const wc = document.getElementById('weekContent');
+  wc.innerHTML = '';
+  const today = new Date();
+  const days = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(today); d.setDate(today.getDate() - i);
+    days.push({ key: dateKey(d), isToday: i === 0 });
+  }
+  EXERCISES.forEach(ex => {
+    let count = 0;
+    const dotsHtml = days.map(d => {
+      const done = (store.history[d.key] || []).includes(ex.id);
+      if (done) count++;
+      return `<div class="week-dot ${done ? 'done' : ''} ${d.isToday ? 'today' : ''}"></div>`;
+    }).join('');
+    const row = document.createElement('div');
+    row.className = 'week-row';
+    row.innerHTML = `
+      <span class="name">${ex.name}</span>
+      <div class="week-dots">${dotsHtml}</div>
+      <span class="week-count">${count}/7</span>
+    `;
+    wc.appendChild(row);
+  });
+}
+
+// ============================================================
+// INIT
+// ============================================================
+render();
+</script>
+
+</body>
+</html>
