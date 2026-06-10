@@ -556,9 +556,9 @@ const EXERCISES = [
   { id:'hammer', group:'bicep', name:'Hammer Curls', target:'3 × 12',
     body:'Regular curl but palms face each other the entire time — like holding a hammer. Targets the brachialis (the muscle under your bicep) which adds visible thickness from both front and side.',
     tip:'<strong>Why these:</strong> Regular curls hit the peak. Hammer curls add width. Do both.' },
-  { id:'incline-curl', group:'bicep', name:'Incline Dumbbell Curls', target:'3 × 10',
-    body:'Sit on a bench inclined to ~45°. Let your arms hang straight down behind you. Curl up from that fully stretched starting position. The stretch at the bottom is the whole point — longer range of motion than standing curls.',
-    tip:'<strong>Needs:</strong> An incline bench (gym) or improvise with pillows on a chair.' },
+    { id:'standing-curl', group:'bicep', name:'Standing Dumbbell Curls', target:'3 × 12',
+    body:'Stand tall, dumbbells at your sides, palms facing forward. Curl the weights up toward your shoulders by bending only at the elbows — keep upper arms pinned to your sides. Squeeze at the top, lower with control. Don\'t swing or use momentum.',
+    tip:'<strong>Form check:</strong> If your elbows are drifting forward or you\'re using your back to swing the weight up, drop the weight.' },
 
   // QUADS
   { id:'bulgarian', group:'quad', name:'Bulgarian Split Squat', target:'3 × 10 each side',
@@ -780,7 +780,7 @@ function renderWeek() {
   wc.innerHTML = '';
   const today = new Date();
   const days = [];
-  for (let i = 6; i >= 0; i--) {
+  for (let i = 0; i <= 6; i++) {
     const d = new Date(today); d.setDate(today.getDate() - i);
     days.push({ key: dateKey(d), isToday: i === 0 });
   }
