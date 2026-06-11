@@ -75,6 +75,27 @@ Open it from the home screen icon (not a fresh browser tab) so your check-offs p
 
 ---
 
+## How this actually works (no engineer required)
+
+Quick demystification, because I had to learn it myself:
+
+- The HTML file lives on GitHub's servers. When you visit the URL, GitHub sends a copy of the file to your phone.
+- Your phone's browser runs the JavaScript inside the file. When you tap a checkbox, the JS writes to your browser's **localStorage** — a small private storage area your browser keeps for each website.
+- That's why your data persists when you close the page: it's tucked into your browser's locker, not gone.
+- It's also why your data is **device-specific**. Your phone's history doesn't show up on your laptop, because they're different browsers with different lockers.
+- Nothing about your check-offs is sent anywhere. Not to GitHub, not to me, not to a database. There's no backend.
+
+**The trade-offs:**
+
+- ✅ Free, fast, no accounts, no privacy policy needed
+- ✅ Works offline once the page is loaded
+- ❌ Doesn't sync across devices
+- ❌ Clearing your browser data wipes your history
+- ❌ New phone = fresh start (no export feature yet)
+
+For a daily checklist you only use on your phone, the trade-offs are fine. If you ever want true sync, you'd need to add a backend (Firebase, a Google Sheet, etc.) — bigger project.
+---
+
 ## Built with
 
 - One HTML file (no build step, no framework)
@@ -82,4 +103,4 @@ Open it from the home screen icon (not a fresh browser tab) so your check-offs p
 - [Inter](https://rsms.me/inter/) for the font
 - Browser localStorage for tracking (your data lives on your device, nowhere else)
 
-Built with Claude as a thinking partner. I'm not an engineer — if I can do this, you can too.
+Built with Claude as a thinking partner. I'm not an engineer, if I can do this, you can too.
