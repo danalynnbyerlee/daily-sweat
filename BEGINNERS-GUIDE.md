@@ -1,6 +1,6 @@
 # Daily Sweat — Your Own Version
 
-A cheat sheet from Dana 💪
+A cheat sheet
 
 ## What is GitHub and why do you need it?
 
@@ -111,9 +111,3 @@ Giving it real references and making it define the system *before* writing code 
 - **Change one thing at a time.** Easier to spot what broke.
 - **If something breaks:** paste the broken code back in and say *"this isn't working, here's what I see [describe], fix it and give me the complete file."*
 - **Brainstorm exercises first:** before coding, just ask *"I want to build a strength plan focused on [your goals]. Suggest exercises grouped by muscle, with sets x reps."* Get the list you want, then plug it in.
-
----
-
-## When you get stuck
-
-Text Dana. She has been there exactly one week ago.
