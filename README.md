@@ -5,7 +5,11 @@ A simple daily strength checklist that lives on your phone's home screen.
 Tap to check off exercises as you do them. See your week at a glance. Edit your own targets inline. That's it — no accounts, no apps to install, no data collection. Just one HTML file.
 
 **[→ See it live](https://danalynnbyerlee.github.io/daily-sweat/)**
-
+<p align="center">
+  <img src="screenshot-main.png" width="30%" />
+  <img src="screenshot-dropdown.png" width="30%" />
+  <img src="screenshot-week.png" width="30%" />
+</p>
 ---
 
 ## Why I built this
