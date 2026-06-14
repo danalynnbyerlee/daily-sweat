@@ -6,9 +6,9 @@ Tap to check off exercises as you do them. See your week at a glance. Edit your 
 
 **[→ See it live](https://danalynnbyerlee.github.io/daily-sweat/)**
 <p align="center">
-  <img src="screenshot-main.png" width="30%" />
-  <img src="screenshot-dropdown.png" width="30%" />
-  <img src="screenshot-week.png" width="30%" />
+  <img src="screenshot-main.jpg" width="30%" />
+  <img src="screenshot-dropdown.jpg" width="30%" />
+  <img src="screenshot-week.jpg" width="30%" />
 </p>
 ---
 
