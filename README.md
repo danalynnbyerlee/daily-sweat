@@ -10,6 +10,8 @@ Tap to check off exercises as you do them. See your week at a glance. Edit your 
   <img src="screenshot-dropdown.jpg" width="30%" />
   <img src="screenshot-week.jpg" width="30%" />
 </p>
+
+> 🆕 New to GitHub? Start with the [Beginner's Guide](BEGINNERS-GUIDE.md).
 ---
 
 ## Why I built this
